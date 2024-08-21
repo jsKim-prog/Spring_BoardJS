@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- xml를 활용한 공통코드 -->
+<mapper namespace="org.zerock.mapper.BoardMapper">
+<!--CDATA : 부호,특수문자의 문자열처리를 위하여 사용  -->
+<!-- create1 : DB에서 번호 생성 -->
+<insert id="insert">
+<![CDATA[
+insert into tbl_board (bno, title, content, writer) values (seq_board.nextval, #{title}, #{content}, #{writer})
+]]>
+</insert>
+<!-- create2 : 번호 생성 후 DB 입력 -->
+<insert id="insertSelectKey">
+<selectKey keyProperty="bno" order="BEFORE" resultType="long">
+select seq_board.nextval from dual
+</selectKey>
+<![CDATA[
+insert into tbl_board (bno, title, content, writer) values (#{bno}, #{title}, #{content}, #{writer})
+]]>
+</insert>
+<!-- read_all -->
+<select id="getList" resultType="org.zerock.domain.BoardVO">
+<![CDATA[
+select * from tbl_board where bno > 0
+]]>
+</select>
+<!-- read_one -->
+<select id="read" resultType="org.zerock.domain.BoardVO">
+<![CDATA[
+select * from tbl_board where bno = #{bno}
+]]>
+</select>
+<!-- update -->
+<update id="update">
+<![CDATA[
+update tbl_board set title=#{title}, content=#{content}, writer=#{writer}, updatedate=sysdate where bno = #{bno}
+]]>
+</update>
+<!-- delete -->
+<delete id="delete">
+<![CDATA[
+delete from tbl_board where bno = #{bno}
+]]>
+</delete>
+</mapper>
