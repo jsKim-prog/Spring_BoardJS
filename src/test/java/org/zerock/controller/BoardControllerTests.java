@@ -84,5 +84,15 @@ public class BoardControllerTests {
 		log.info("결과 url : "+resultPage);	
 		
 	}
+	
+	//페이징 처리 테스트
+	@Test
+	public void testListPaging() throws Exception{
+		log.info(
+				mockMvc.perform(MockMvcRequestBuilders.get("/board/list")
+						.param("pageNum", "1")
+						.param("amount", "5"))
+				.andReturn().getModelAndView().getModelMap());
+	}
 
 }
