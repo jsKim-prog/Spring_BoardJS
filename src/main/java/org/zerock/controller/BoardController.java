@@ -32,6 +32,8 @@ public class BoardController {
 		//String name : list , Object value : List<BoardVO>		
 	}
 	
+	// register 등록 : 화면 연결은 get
+	
 	// register 등록 : post,  url 이동 있음(등록->list)
 	@PostMapping("/register") // http://localhost:80/board/register
 	public String register(BoardVO board, RedirectAttributes rttr) { //객체로 받은 form데이터, RedirectAttributes 객체 사용
