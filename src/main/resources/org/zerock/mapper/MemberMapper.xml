@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- xml를 활용한 공통코드 -->
+<mapper namespace="org.zerock.mapper.MemberMapper">
+	<!-- //create : 회원등록(객체->int) -->
+	<insert id="insert">
+<![CDATA[
+insert into member_tb (ninckname, pw, email, phone, birth) values (#{ninckname}, #{pw}, #{email}, #{phone}, to_date(#{birth},'YYYY/MM/DD'))
+]]>
+	</insert>
+	<!-- read_one1: 로그인(email, pw->객체) -->
+	<select id="selectMem" resultType="org.zerock.domain.MemberVO">
+<![CDATA[
+select * from member_tb where email = #{email} and pw = #{pw}
+]]>
+	</select>
+	<!-- read_one2: 회원정보 가져오기(nickname->객체) -->
+	<select id="readMem" resultType="org.zerock.domain.MemberVO">
+<![CDATA[
+select * from member_tb where ninckname = #{ninckname}
+]]>
+	</select>
+	<!--read_one3: 회원유무, 닉네임 중복 검증(nickname->int) -->
+	<select id="readCheck" resultType="int">
+<![CDATA[
+select count(*) as checkrst from member_tb where ninckname = #{ninckname}
+]]>
+	</select>
+	<!--update : 회원정보 변경(객체-> int) -->
+	<update id="update">
+<![CDATA[
+update member_tb set pw = #{pw}, email = #{email}, phone = #{phone} where ninckname = #{ninckname}
+]]>
+	</update>
+	<!-- delete : 회원탈퇴(객체-> int) -->
+	<delete id="delete">
+<![CDATA[
+delete from member_tb where ninckname = #{ninckname} and  pw = #{pw}
+]]>
+	</delete>
+</mapper>

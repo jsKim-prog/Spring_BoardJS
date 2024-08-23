@@ -24,6 +24,15 @@ insert into tbl_board (bno, title, content, writer) values (#{bno}, #{title}, #{
 select * from tbl_board where bno > 0
 ]]>
 </select>
+
+<!-- read_all + 페이징 처리 추가 -->
+<select id="getListWithPaging" resultType="org.zerock.domain.BoardVO">
+<![CDATA[
+select bno, title, content, writer, regdate, updatedate from 
+(select  /*+INDEX_DESC(tbl_board pk_board)*/ rownum rn, bno, title, content, writer, regdate, updatedate from tbl_board where rownum <= #{pageNum} * #{amount}) where rn > (#{pageNum}-1) * #{amount}
+]]>
+</select>
+
 <!-- read_one -->
 <select id="read" resultType="org.zerock.domain.BoardVO">
 <![CDATA[
@@ -42,4 +51,11 @@ update tbl_board set title=#{title}, content=#{content}, writer=#{writer}, updat
 delete from tbl_board where bno = #{bno}
 ]]>
 </delete>
+
+<!-- 페이징 : 전체 보드수 구하기 -->
+<select id="getTotalCount" resultType="int"> 
+<![CDATA[
+select count(*) from tbl_board where bno > 0
+]]>
+</select>
 </mapper>

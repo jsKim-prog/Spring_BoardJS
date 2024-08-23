@@ -1,11 +1,14 @@
 package org.zerock.mapper;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.zerock.domain.BoardVO;
+import org.zerock.domain.Criteria;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
@@ -78,6 +81,14 @@ public class BoardMapperTests {
 	@Test
 	public void testDelete() {
 		log.info("삭제한 개수 : "+ mapper.delete(5L));
+	}
+	
+	//페이징 처리 테스트
+	@Test
+	public void testGetListWithPaging() {
+		Criteria cri = new Criteria(2,10);
+		List<BoardVO> list = mapper.getListWithPaging(cri);
+		list.forEach(board->log.info(board));
 	}
 
 }
