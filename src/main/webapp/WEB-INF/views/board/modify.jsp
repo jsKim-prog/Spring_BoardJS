@@ -20,6 +20,8 @@
 					<!-- 페이징처리를 위한 추가 -->
 					<input type="hidden" name="pageNum" value="${cri.pageNum}"/>
 					<input type="hidden" name="amount" value="${cri.amount}"/>
+					<input type="hidden" name="keyword" value="${cri.keyword}"/>
+					<input type="hidden" name="type" value="${cri.type}"/>
 					<div class="form-group">
 					<label>번호</label><input class="form-control" name="bno" value="${findboard.bno}" readonly="readonly">
 					</div>
@@ -61,10 +63,15 @@ $(document).ready(function() {
 			formObj.attr("action", "/board/list").attr("method", "get");
 			var pageNumTag = $("input[name='pageNum']").clone();
 			var amountTag = $("input[name='amount']").clone();
+			var keywordTag = $("input[name='keyword']").clone();
+			var typeTag = $("inpu[name='type']").clone();
 			
 			formObj.empty(); /* list로 보낼 땐 비우고 보낸다. */
+			/* 검색조건, 페이징 정보 유지하여 리스트페이지까지 보낸다.(get) */
 			formObj.append(pageNumTag);
 			formObj.append(amountTag);
+			formObj.append(keywordTag);
+			formObj.append(typeTag);
 		}
 		formObj.submit(); /* operation= modify 라면 19행 실행  */
 	});

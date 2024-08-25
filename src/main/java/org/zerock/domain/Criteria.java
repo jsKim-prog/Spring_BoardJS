@@ -1,5 +1,7 @@
 package org.zerock.domain;
 
+import org.springframework.web.util.UriComponentsBuilder;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -29,8 +31,21 @@ public class Criteria { //페이징 처리 - 검색기준
 	public String[] getTypeArr() {
 		//검색조건 : T(title), W(writer), C(content)
 		//검색조건을 배열로 만들어 한번에 처리한다. -> mybatis의 동적태그 이용
+		//검색조건이 없으면 배열을 만들고, 있으면 글자별로 배열 삽입
 		
 		return (type==null)? new String[] {} : type.split("");
+	}
+	
+	//메서드 - 검색조건 유지를 위한 url 생성
+	public String getListLink() {
+		//UriComponentsBuilder : uri 생성해주면서 자동으로 인코딩해준다(한글처리도 자동)
+		UriComponentsBuilder builder = UriComponentsBuilder.fromPath("")
+				.queryParam("pageNum", this.pageNum)
+				.queryParam("amount", this.getAmount())
+				.queryParam("type", this.getType())
+				.queryParam("keyword", this.getKeyword());
+		return builder.toUriString(); //**toUriString() 주의!!(toString()아님)
+		//..?pageNum=3&amount=20&type=TC&keyword=user
 	}
 
 }

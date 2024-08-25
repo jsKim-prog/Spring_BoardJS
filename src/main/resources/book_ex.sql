@@ -12,6 +12,7 @@ create table tbl_board(
 alter table tbl_board add constraint pk_board primary key(bno);
 
 -- drop table tbl_board;
+truncate table tbl_board;
 select * from tbl_board;
 
 insert into TBL_BOARD (bno, title, content, writer) values (seq_board.nextval, '테스트 제목', '테스트 내용', 'user00');

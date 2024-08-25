@@ -36,7 +36,7 @@ public class BoardController {
 //	}
 	
 	//list 전체목록 : get , url 이동 없음 + 페이징 처리
-	@GetMapping("/list") // http://localhost:80/board/list
+	@GetMapping("/list") // http://localhost:80/board/list?pageNum=1&amount=10
 	public void list(Criteria cri, Model model) {
 		log.info("BoardController.list() 메서드 실행");
 		model.addAttribute("list", service.getList(cri));
@@ -78,7 +78,7 @@ public class BoardController {
 	
 	// modify 수정 : post,  url 이동 있음(수정->list)
 	@PostMapping("/modify") // http://localhost:80/board/modify
-	public String modify(BoardVO board, @ModelAttribute("cri") Criteria cri, RedirectAttributes rttr) {
+	public String modify(BoardVO board,  Criteria cri, RedirectAttributes rttr) {
 		log.info("BoardController.modify() 메서드 실행");
 		//service.modify(board)의 리턴타입 : boolean
 		// @ModelAttribute("cri") Criteria cri : 페이징처리를 위한 추가(명시적으로 이름지정)
@@ -89,14 +89,17 @@ public class BoardController {
 			//변경실패시 메시지
 			rttr.addFlashAttribute("result", "fail");
 		}
-		rttr.addAttribute("pageNum", cri.getPageNum()); //페이징처리를 위한 추가
-		rttr.addAttribute("amount", cri.getAmount());
-		return "redirect:/board/list";
+		//getListLink()이용으로 아래 비활성화
+//		rttr.addAttribute("pageNum", cri.getPageNum()); //페이징처리를 위한 추가
+//		rttr.addAttribute("amount", cri.getAmount());
+//		rttr.addAttribute("type", cri.getType()); //검색어 처리를 위한 추가
+//		rttr.addAttribute("keyword", cri.getKeyword());
+		return "redirect:/board/list"+cri.getListLink();
 	}
 	
 	// remove 삭제 : post,  url 이동 있음(삭제->list)
 	@PostMapping("/remove") // http://localhost:80/board/remove
-	public String remove(@RequestParam("bno") Long bno, @ModelAttribute("cri") Criteria cri, RedirectAttributes rttr) {
+	public String remove(@RequestParam("bno") Long bno, Criteria cri, RedirectAttributes rttr) {
 		log.info("BoardController.remove() 메서드 실행");
 		//service.remove(bno)의 리턴타입 : boolean
 		if(service.remove(bno)) {
@@ -104,9 +107,10 @@ public class BoardController {
 		}else {
 			rttr.addFlashAttribute("result", "fail");
 		}
-		rttr.addAttribute("pageNum", cri.getPageNum()); //페이징처리를 위한 추가
-		rttr.addAttribute("amount", cri.getAmount());
-		return "redirect:/board/list";
+		//getListLink()이용으로 아래 비활성화
+//		rttr.addAttribute("pageNum", cri.getPageNum()); //페이징처리를 위한 추가
+//		rttr.addAttribute("amount", cri.getAmount());
+		return "redirect:/board/list"+cri.getListLink();
 	}
 
 }

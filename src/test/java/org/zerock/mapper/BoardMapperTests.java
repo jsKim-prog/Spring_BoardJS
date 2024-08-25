@@ -90,5 +90,37 @@ public class BoardMapperTests {
 		List<BoardVO> list = mapper.getListWithPaging(cri);
 		list.forEach(board->log.info(board));
 	}
+	
+	//검색처리 테스트
+	@Test
+	public void testSearch() {
+		Criteria cri = new Criteria();
+		cri.setKeyword("테스트");
+		cri.setType("WT");
+		//( writer like '%'||'테스트'||'%' or title like '%'||'테스트'||'%' ) and rownum <= 1 * 10) where rn  > (1-1) * 10 
+		
+		//cri.setType("CW");
+		//( content like '%'||'테스트'||'%' or writer like '%'||'테스트'||'%' ) and rownum <= 1 * 10) where  rn > (1-1) * 10 
+		
+		//cri.setType("W");
+		//( writer like '%'||'테스트'||'%' ) and rownum <= 1 * 10) where rn > (1-1) * 10 
+		//cri.setType("TC");
+		//( title like '%'||'테스트'||'%' or content like '%'||'테스트'||'%' ) and rownum <= 1 
+		List<BoardVO> list = mapper.getListWithPaging(cri);
+		list.forEach(board -> log.info(board));
+	}
+	
+	//검색결과 개수 테스트
+	@Test
+	public void testCount() {
+		Criteria cri = new Criteria();
+		cri.setKeyword("테스");
+		cri.setType("W");
+		int rst = mapper.getTotalCount(cri);
+		log.info("검색개수 : "+rst);
+	}
+	
+	
+	
 
 }
