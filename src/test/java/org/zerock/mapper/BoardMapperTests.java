@@ -1,11 +1,14 @@
 package org.zerock.mapper;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.zerock.domain.BoardVO;
+import org.zerock.domain.Criteria;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
@@ -79,5 +82,45 @@ public class BoardMapperTests {
 	public void testDelete() {
 		log.info("삭제한 개수 : "+ mapper.delete(5L));
 	}
+	
+	//페이징 처리 테스트
+	@Test
+	public void testGetListWithPaging() {
+		Criteria cri = new Criteria(2,10);
+		List<BoardVO> list = mapper.getListWithPaging(cri);
+		list.forEach(board->log.info(board));
+	}
+	
+	//검색처리 테스트
+	@Test
+	public void testSearch() {
+		Criteria cri = new Criteria();
+		cri.setKeyword("테스트");
+		cri.setType("WT");
+		//( writer like '%'||'테스트'||'%' or title like '%'||'테스트'||'%' ) and rownum <= 1 * 10) where rn  > (1-1) * 10 
+		
+		//cri.setType("CW");
+		//( content like '%'||'테스트'||'%' or writer like '%'||'테스트'||'%' ) and rownum <= 1 * 10) where  rn > (1-1) * 10 
+		
+		//cri.setType("W");
+		//( writer like '%'||'테스트'||'%' ) and rownum <= 1 * 10) where rn > (1-1) * 10 
+		//cri.setType("TC");
+		//( title like '%'||'테스트'||'%' or content like '%'||'테스트'||'%' ) and rownum <= 1 
+		List<BoardVO> list = mapper.getListWithPaging(cri);
+		list.forEach(board -> log.info(board));
+	}
+	
+	//검색결과 개수 테스트
+	@Test
+	public void testCount() {
+		Criteria cri = new Criteria();
+		cri.setKeyword("테스");
+		cri.setType("W");
+		int rst = mapper.getTotalCount(cri);
+		log.info("검색개수 : "+rst);
+	}
+	
+	
+	
 
 }

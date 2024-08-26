@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.zerock.domain.BoardVO;
+import org.zerock.domain.Criteria;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
@@ -41,10 +42,12 @@ public class BoardServiceTests {
 		log.info("등록된 게시물 번호 : "+newvo.getBno());
 	}
 	
-	//getList()  : 전체 리스트를 받아 List로 리턴
+	//getList()  : 전체 리스트를 받아 List로 리턴+페이징 처리 수정
 	@Test
 	public void testGetList() {
-		service.getList().forEach(board->log.info(board));
+		//service.getList().forEach(board->log.info(board));
+		service.getList(new Criteria(1, 5)).forEach(board->log.info(board));
+		//5페이지씩 잘랐을 때 두 번째 페이지
 	}
 	
 	//get(Long bno) :bno를 받아 객체로 출력한다.
