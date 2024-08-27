@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- xml를 활용한 공통코드 -->
+<mapper namespace="org.zerock.mapper.ReplyMapper">
+<insert id="insert">
+	<![CDATA[
+	insert into tbl_reply (rno, bno, reply, replyer) values (seq_reply.nextval, #{bno}, #{reply}, #{replyer})
+	]]>
+</insert>
+
+<select id="read" resultType="org.zerock.domain.ReplyVO">
+	<![CDATA[
+	select * from tbl_reply where rno = #{rno}
+	]]>
+</select>
+
+<update id="update">
+	<![CDATA[
+	update tbl_reply set reply = #{reply}, updateDate = sysdate where rno = #{rno}
+	]]>
+</update>
+
+<delete id="delete">
+	<![CDATA[
+	delete from tbl_reply where rno = #{rno}
+	]]>
+</delete>
+
+<!-- 리스트 : 페이지+bno -->
+<select id="getListWithPaging" resultType="org.zerock.domain.ReplyVO">
+	<![CDATA[
+	select rno, bno, reply, replyer, replyDate, updateDate from tbl_reply where bno = #{bno} order by rno desc
+	]]>
+</select>
+
+</mapper>

@@ -28,11 +28,11 @@ public class MemberMapperTests {
 	@Test
 	public void testInsert() {
 		MemberVO vo = new MemberVO();
-		vo.setNinckname("ccc");
-		vo.setEmail("ccc@ccc");
+		vo.setNinckname("tester");
+		vo.setEmail("tester@tester");
 		vo.setPhone("010-123-1234");
 		vo.setBirth("1999/12/31");
-		vo.setPw("ccc");
+		vo.setPw("tester");
 
 		int rst = mapper.insert(vo);
 
@@ -40,6 +40,8 @@ public class MemberMapperTests {
 		log.info("입력객체 수 : " + rst);
 		// 입력된 객체 : MemberVO(ninckname=ccc, pw=ccc, email=ccc@ccc, phone=010-123-1234,
 		// birth=1999/12/31, regdate=null)
+		// 입력객체 수 : 1
+		//입력된 객체 : MemberVO(ninckname=tester, pw=tester, email=tester@tester, phone=010-123-1234, birth=1999/12/31, regdate=null)
 		// 입력객체 수 : 1
 	}
 
