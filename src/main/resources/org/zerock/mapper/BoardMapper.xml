@@ -24,6 +24,30 @@ insert into tbl_board (bno, title, content, writer) values (#{bno}, #{title}, #{
 select * from tbl_board where bno > 0
 ]]>
 </select>
+
+<!-- read_all + 페이징 처리 + 검색어 조건 추가 -->
+<select id="getListWithPaging" resultType="org.zerock.domain.BoardVO">
+<![CDATA[
+select bno, title, content, writer, regdate, updatedate from 
+(select  /*+INDEX_DESC(tbl_board pk_board)*/ rownum rn, bno, title, content, writer, regdate, updatedate from tbl_board where 
+]]>
+<include refid="criteia"></include>
+<![CDATA[
+rownum <= #{pageNum} * #{amount}) where rn > (#{pageNum}-1) * #{amount}
+]]>
+</select>
+
+<!-- 페이징 : 전체 보드수 구하기 + 검색어에 의한 데이터 개수 구하기 -->
+<select id="getTotalCount" resultType="int">
+<![CDATA[
+select count(*) from tbl_board where
+]]>
+<include refid="criteia"></include>
+<![CDATA[
+bno > 0
+]]>
+</select>
+
 <!-- read_one -->
 <select id="read" resultType="org.zerock.domain.BoardVO">
 <![CDATA[
@@ -42,4 +66,26 @@ update tbl_board set title=#{title}, content=#{content}, writer=#{writer}, updat
 delete from tbl_board where bno = #{bno}
 ]]>
 </delete>
+
+
+<!--검색어 처리를 위한 sql (include용) -->
+<sql id="criteia">
+ <trim prefix="(" suffix=") and" prefixOverrides="or">
+ <foreach item="type" collection="typeArr">
+  <trim prefix="or">
+   <choose>
+    <when test="type == 'T'.toString()">
+    title like '%'||#{keyword}||'%'
+    </when>
+    <when test="type == 'C'.toString()">
+    content like '%'||#{keyword}||'%'
+    </when>
+    <when test="type== 'W'.toString()">
+    writer like '%'||#{keyword}||'%'
+    </when>
+   </choose>
+  </trim>
+ </foreach>
+</trim>
+</sql>
 </mapper>
